@@ -35,8 +35,21 @@ public class LibraryService {
      */
     public boolean isBookInLibraryByIsbn(String isbn) {
         // PARTICIPANTS: IMPLEMENT YOUR BINARY SEARCH HERE
+        if (isbn == null || isbn.equals("")) {
+            return false;
+        }
 
-        throw new NotImplementedException("isBookInLibraryByIsbn is not yet implemented!");
+        BookNode curr = books;
+        while (curr != null) {
+            if (isbn.equals(curr.getBook().getIsbn())) {
+                return true;
+            } else if (isbn.compareTo(curr.getBook().getIsbn()) > 0) {
+                curr = curr.getRight();
+            } else {
+                curr = curr.getLeft();
+            }
+        }
+        return false;
     }
 
 
@@ -51,7 +64,22 @@ public class LibraryService {
      */
     public boolean isBookInLibraryByTitleAndAuthor(String title, String author) {
         // PARTICIPANTS: IMPLEMENT YOUR DEPTH FIRST SEARCH HERE
+        if (title == null || title.equals("") || author == null || author.equals("")) {
+            return false;
+        }
+        BookNode curr = books;
+        return dfs(curr, title, author);
+    }
 
-        throw new NotImplementedException("isBookInLibraryByTitleAndAuthor is not yet implemented!");
+    private boolean dfs(BookNode curr, String title, String author) {
+        if (curr == null) {
+            return false;
+        }
+
+        if (curr.getBook().getTitle().equals(title) && curr.getBook().getAuthor().equals(author)) {
+            return true;
+        }
+
+        return dfs(curr.getLeft(), title, author) || dfs(curr.getRight(), title, author);
     }
 }
